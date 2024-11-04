@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VEMBU MED-AI Emulator Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #e0f2fe, #f3e8ff);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #1e293b;
+            margin: 0;
+        }
+        .product-info {
+            font-size: 1.2rem;
+            color: #64748b;
+        }
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .module-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .module-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .module-description {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+        .module-button {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .module-button:hover {
+            background-color: #2563eb;
+        }
+        .news-updates {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .news-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        .news-item {
+            margin-bottom: 15px;
+        }
+        .news-item h3 {
+            font-size: 1rem;
+            margin: 0 0 5px 0;
+        }
+        .news-item p {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin: 0;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        .vembu-logo {
+            width: 200px;
+            height: auto;
+            cursor: pointer;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 800px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .research-hub {
+            padding: 20px;
+        }
+        .research-hub h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .research-hub .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .research-hub .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .research-hub .card-header {
+            margin-bottom: 15px;
+        }
+        .research-hub .card-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .research-hub .card-content {
+            display: grid;
+            gap: 10px;
+        }
+        .research-hub label {
+            font-weight: bold;
+        }
+        .research-hub input,
+        .research-hub textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .research-hub button {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .research-hub button:hover {
+            background-color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1>VEMBU MED-AI Emulator Dashboard</h1>
+            </div>
+            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202024-09-18%20195800-a4nLG3rk4BjWh3SmeBQAwhhZYCLOBp.png" alt="VEMBU MED-AI Emulator Logo" class="vembu-logo" id="vembuLogo">
+        </header>
+
+        <div class="modules-grid" id="modulesGrid"></div>
+
+        <div class="news-updates">
+            <h2 class="news-title">News & Updates</h2>
+            <div id="newsUpdates"></div>
+        </div>
+
+        <footer>
+            © <span id="currentYear"></span> VEMBU MED-AI Emulator. All rights reserved.
+        </footer>
+    </div>
+
+    <div id="researchHubModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="research-hub">
+                <h1>Research Hub</h1>
+                <div class="grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Submit Research Proposal</h2>
+                        </div>
+                        <div class="card-content">
+                            <label for="title">Research Title</label>
+                            <input id="title" placeholder="Enter research title" />
+                            <label for="abstract">Abstract</label>
+                            <textarea id="abstract" placeholder="Enter research abstract"></textarea>
+                            <button>Submit Proposal</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Collaborate on Projects</h2>
+                        </div>
+                        <div class="card-content">
+                            <label for="projectId">Project ID</label>
+                            <input id="projectId" placeholder="Enter project ID" />
+                            <label for="contribution">Your Contribution</label>
+                            <textarea id="contribution" placeholder="Describe your contribution"></textarea>
+                            <button>Join Project</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const modules = [
+            {
+                title: "Multimodal Diagnostics",
+                description: "Analyze patient history and medical imaging data for enhanced diagnostic precision.",
+                link: "https://vembureport.vercel.app/"
+            },
+            {
+                title: "Deccaan-DNA-UIN",
+                description: "Generate personalized treatment plans based on patient data and medical literature.",
+                link: "https://deccaandnauin.vercel.app/"
+            },
+            {
+                title: "Synthetic Data Generation",
+                description: "Create realistic medical records and imaging data for research and training.",
+                link: "https://vemb-udata.vercel.app/"
+            },
+            {
+                title: "AI-Powered Drug Discovery",
+                description: "Accelerate drug discovery process using AI-generated molecular structures.",
+                link: "https://vembudrug.vercel.app/"
+            },
+            {
+                title: "Patient Engagement Chatbot",
+                description: "Intelligent interface for symptom assessment and patient education.",
+                link: "https://vembuchat.vercel.app/"
+            },
+            {
+                title: "Research Hub",
+                description: "Centralized platform for healthcare institutions to collaborate and analyze data.",
+                link: "#"
+            }
+        ];
+
+        const newsUpdates = [
+            { title: "New AI model improves diagnostic accuracy by 15%", date: "2024-10-16" },
+            { title: "VEMBU MED-AI partners with leading pharmaceutical company", date: "2024-10-16" },
+            { title: "Patient engagement rates increase by 30% with AI chatbot", date: "2024-10-16" },
+        ];
+
+        function createModuleCard(module) {
+            return `
+                <div class="module-card">
+                    <h2 class="module-title">${module.title}</h2>
+                    <p class="module-description">${module.description}</p>
+                    <button class="module-button" onclick="window.location.href='${module.link}'">Access Module</button>
+                </div>
+            `;
+        }
+
+        function createNewsItem(newsItem) {
+            return `
+                <div class="news-item">
+                    <h3>${newsItem.title}</h3>
+                    <p>${newsItem.date}</p>
+                </div>
+            `;
+        }
+
+        document.getElementById('modulesGrid').innerHTML = modules.map(createModuleCard).join('');
+        document.getElementById('newsUpdates').innerHTML = newsUpdates.map(createNewsItem).join('');
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Modal functionality
+        const modal = document.getElementById("researchHubModal");
+        const logo = document.getElementById("vembuLogo");
+        const span = document.getElementsByClassName("close")[0];
+
+        logo.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
